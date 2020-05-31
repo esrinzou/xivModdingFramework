@@ -4306,6 +4306,7 @@ namespace xivModdingFramework.Models.FileTypes
                                             var binormal = bitangents[idx];
                                             var binormalHandedness = ((byte)(handedness[idx] > 0 ? 255 : 0));
                                             //var binormalHandedness = meshData.VertexData.BiNormalHandedness[vertIndex];
+
                                             var color = meshData.VertexData.Colors[vertIndex];
                                             var textureCoordinates0 = meshData.VertexData.TextureCoordinates0[vertIndex];
                                             var textureCoordinates1 = meshData.VertexData.TextureCoordinates1[vertIndex];
