@@ -923,6 +923,15 @@ namespace xivModdingFramework.Materials.FileTypes
             var mtrlFile = GetMtrlFileName(itemModel, itemType, xivRace, part, variant, itemCategory);
             var mtrlFolder = GetMtrlFolder(itemModel, itemType, xivRace, variant);
 
+            var index = new Index(_gameDirectory);            
+
+            // If the file does not exist, resort to using variant 1
+            if (!await index.FileExists(HashGenerator.GetHash(mtrlFile), HashGenerator.GetHash(mtrlFolder), DataFile))
+            {
+                mtrlFile = GetMtrlFileName(itemModel, itemType, xivRace, part, 1, itemCategory);
+                mtrlFolder = GetMtrlFolder(itemModel, itemType, xivRace, 1);
+            }
+
             return (mtrlFolder, mtrlFile, hasVfx);
         }
 
@@ -1049,7 +1058,7 @@ namespace xivModdingFramework.Materials.FileTypes
         }
         
         /// <summary>
-        /// Syncrhonously generate a MTRL filename from the constituent parts.
+        /// Synchronously generate a MTRL filename from the constituent parts.
         /// </summary>
         /// <param name="itemModel"></param>
         /// <param name="itemType"></param>

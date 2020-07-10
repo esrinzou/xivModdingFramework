@@ -379,7 +379,18 @@ namespace xivModdingFramework.Items.Categories
 
             var mtrlFolder = $"chara/demihuman/d{id}/obj/equipment/e{bodyVer}/material/v{version}";
 
-            var files = await index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), XivDataFile._04_Chara);
+            var files = new List<int>();
+
+            try
+            {
+                // Get the list of hashed file names from the mtrl folder
+                files = await index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), XivDataFile._04_Chara);
+            }
+            catch
+            {
+                // If the folder does not exist, fall back to loading variant 1
+                files = await index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder.Replace(version, "0001")), XivDataFile._04_Chara);
+            }
 
             foreach (var slotAbr in SlotAbbreviationDictionary)
             {

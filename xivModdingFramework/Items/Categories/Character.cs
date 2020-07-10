@@ -257,7 +257,16 @@ namespace xivModdingFramework.Items.Categories
                 file = XivStrings.EarsMtrlFile;
             }
 
-            var fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            var fileList = new List<int>();
+
+            try
+            {
+                fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            }
+            catch
+            {
+                // No-op, handling to be added later if necessary
+            }
 
             foreach (var type in typeDict)
             {
@@ -332,7 +341,16 @@ namespace xivModdingFramework.Items.Categories
                 file = XivStrings.EarsMtrlFile;
             }
 
-            var fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            var fileList = new List<int>();
+
+            try
+            {
+                fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            }
+            catch
+            {
+                // No-op, handling to be added later if necessary
+            }
 
             return (from part in parts
                 let mtrlFile = string.Format(file, race.GetRaceCode(), num.ToString().PadLeft(4, '0'), part)
@@ -438,7 +456,16 @@ namespace xivModdingFramework.Items.Categories
                 file = XivStrings.EarsMDLFile;
             }
 
-            var fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            var fileList = new List<int>();
+
+            try
+            {
+                fileList = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(folder), XivDataFile._04_Chara);
+            }
+            catch
+            {
+                // No-op, handling to be added later if necessary
+            }
 
             var typeList = new List<string>();
             foreach (var type in typeDict)

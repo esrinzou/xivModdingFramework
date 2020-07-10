@@ -613,6 +613,11 @@ namespace xivModdingFramework.SqPack.FileTypes
                 }
             });
 
+            if (fileHashesList.Count == 0)
+            {
+                throw new Exception("The given folder does not exist.");
+            }
+
             return fileHashesList;
         }
 

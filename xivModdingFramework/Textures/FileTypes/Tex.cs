@@ -269,8 +269,21 @@ namespace xivModdingFramework.Textures.FileTypes
                     break;
             }
 
-            // Get a list of hashed mtrl files that are in the given folder
-            var files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), dataFile);
+            var files = new List<int>();
+
+            try
+            {
+                // Get the list of hashed file names from the mtrl folder
+                files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), dataFile);
+            }
+            catch
+            {
+                if (itemType != XivItemType.human && itemType != XivItemType.furniture)
+                {
+                    // If the folder does not exist, fall back to loading variant 1
+                    files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder.Replace(version, "0001")), dataFile);
+                }                
+            }
 
             // append the part char to the mtrl file and see if its hashed value is within the files list
             var partList =

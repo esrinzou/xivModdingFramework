@@ -210,6 +210,11 @@ namespace xivModdingFramework.Items.Categories
                     xivGear.Name = new string(nameString.Where(c => !char.IsControl(c)).ToArray());
                     xivGear.Name = xivGear.Name.Trim();
 
+                    if (xivGear.Name.Contains("Werewolf"))
+                    {
+                        
+                    }
+
                     // If we have a secondary model
 
                     XivGear secondaryItem = null;
@@ -407,8 +412,18 @@ namespace xivModdingFramework.Items.Categories
                 testFilesDictionary.Add(HashGenerator.GetHash(mtrlFile), ID);
             }
 
-            // get the list of hashed file names from the mtrl folder
-            var files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), dataFile);
+            var files = new List<int>();
+            
+            try
+            {
+                // Get the list of hashed file names from the mtrl folder
+                files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), dataFile);
+            }
+            catch
+            {
+                // If the folder does not exist, fall back to loading variant 1
+                files = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder.Replace(gearVersion, "0001")), dataFile);
+            }
 
             // Loop through each entry in the dictionary
             foreach (var testFile in testFilesDictionary)
@@ -590,8 +605,16 @@ namespace xivModdingFramework.Items.Categories
                     var mtrlFolder = $"{folder}{variant.ToString().PadLeft(4, '0')}";
                     var mtrlFile = "";
 
-                    var mtrlFolderHashes =
-                        await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), XivDataFile._04_Chara);
+                    var mtrlFolderHashes = new List<int>();
+
+                    try
+                    {
+                        mtrlFolderHashes = await _index.GetAllHashedFilesInFolder(HashGenerator.GetHash(mtrlFolder), XivDataFile._04_Chara);
+                    }
+                    catch
+                    {
+                        // No-op, don't add folders that do not exist
+                    }                    
 
                     foreach (var race in IDRaceDictionary.Keys)
                     {
